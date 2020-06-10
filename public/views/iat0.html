@@ -10,7 +10,9 @@
   <link href="../css/jspsych.css" rel="stylesheet" type="text/css"></link>
 </head>
 <body>
+  <div class = "jspsych-display-element">
     <div id="jspsych_target"></div>
+  </div>
 </body>
 
 <script>
@@ -30,12 +32,12 @@ var category_block = {
   stimulus: '<p>Next, you will use the "E" and "I" computer keys ' + 'to categorize items into groups as fast as you can. ' +
   'These are the four groups and the items that belong to each:<br><br>' +
   '<strong>Scientific</strong>:<br>' + 'Theory, Logics, Review, Doctor, Research, ' +
-  'Method, Ratio, Axiom<br><br>' + '<strong>Musical</strong>:<br>' + 'Guitar, ' +
+  'Method, Ratio, Axiom<br><br>' + '<strong>Musical</strong>:<br>' + 'Singer, ' +
   'Rhythm, Lyrics, Guitar, Dance, Concert, Melody, Album<br><br>' +
-  '<strong>Old</strong>:<br>' + "<img src='../img/race/bf14_nc.jpg'></img>  " +
+  '<strong>Black</strong>:<br>' + "<img src='../img/race/bf14_nc.jpg'></img>  " +
   "<img src='../img/race/bf23_nc.jpg'></img>  " + "<img src='../img/race/bf56_nc.jpg'></img>  " +
   "<img src='../img/race/bm14_nc.jpg'></img>  " + "<img src='../img/race/bm23_nc.jpg'></img>  " +
-  "<img src='../img/race/bm56_nc.jpg'></img><br><br>" + '<strong>Young</strong>:<br>' +
+  "<img src='../img/race/bm56_nc.jpg'></img><br><br>" + '<strong>White</strong>:<br>' +
   "<img src='../img/race/wf2_nc.jpg'></img>  " + "<img src='../img/race/wf3_nc.jpg'></img>  " +
   "<img src='../img/race/wf6_nc.jpg'></img>  " + "<img src='../img/race/wm1_nc.jpg'></img>  " +
   "<img src='../img/race/wm4_nc.jpg'></img>  " + "<img src='../img/race/wm6_nc.jpg'></img><br><br>" +
@@ -45,10 +47,10 @@ var category_block = {
 
 var instructions_block = {
   type: 'html-keyboard-response',
-  stimulus: "<div style='position: absolute; top: 18%; left: 20%'><p>Press E for:<br><strong>OLD</strong></p></div>" +
-  "<div style='position: absolute; top: 18%; right: 20%'><p>Press I for:<br><strong>YOUNG</strong></p></div>" +
-  "<div style='position: relative; top: 42%; margin-left: auto; margin-right: auto'>Put a left finger on the <strong>E</strong> key for items that belong to the Black People category. Put a right finger on the " +
-  "<strong>I</strong> key for items that belong to the White People " +
+  stimulus: "<div style='position: absolute; top: 18%; left: 20%'><p>Press E for:<br><strong>BLACK</strong></p></div>" +
+  "<div style='position: absolute; top: 18%; right: 20%'><p>Press I for:<br><strong>WHITE</strong></p></div>" +
+  "<div style='position: relative; top: 42%; margin-left: auto; margin-right: auto'>Put a left finger on the <strong>E</strong> key for items that belong to the BLACK People category. Put a right finger on the " +
+  "<strong>I</strong> key for items that belong to the WHITE People " +
   "category. Items will appear one at a time.<br><br>" + "If you " +
   "make a mistake, a red X will appear. Press the keys listed below " +
   "to continue. Go as fast as you can while being accurate.<br><br> " +
@@ -68,8 +70,8 @@ var trial_block = {
       trial_duration: 3000, //Only if display_feedback is false
       left_category_key: 'E',
       right_category_key: 'I',
-      left_category_label: ['OLD'],
-      right_category_label: ['YOUNG'],
+      left_category_label: ['BLACK'],
+      right_category_label: ['WHITE'],
       response_ends_trial: true,
       data: { iat_type: 'practice' }
     }
@@ -94,11 +96,11 @@ var trial_block = {
 
 var instructions_block2 = {
   type: 'html-keyboard-response',
-  stimulus: "<div style='position: absolute; top: 18%; left: 20%'>Press E for:<br><strong>BAD</strong></div>" +
-  "<div style='position: absolute; top: 18%; right: 20%'>Press I for:<br><strong>GOOD</strong></div>" +
+  stimulus: "<div style='position: absolute; top: 18%; left: 20%'>Press E for:<br><strong>MUSIC</strong></div>" +
+  "<div style='position: absolute; top: 18%; right: 20%'>Press I for:<br><strong>SCIENCE</strong></div>" +
   "<div style='position: relative; top: 42%; margin-left: auto; margin-right: auto'>Put a left finger on the <strong>E</strong> key for items that " +
-  "belong to the Musical category. Put a right finger on the " +
-  "<strong>I</strong> key for items that belong to the Scientific " +
+  "belong to the MUSIC category. Put a right finger on the " +
+  "<strong>I</strong> key for items that belong to the SCIENCE " +
   "category. Items will appear one at a time.<br><br>" + "If you " +
   "make a mistake, a red X will appear. Press the keys listed below " +
   "to continue. Go as fast as you can while being accurate.<br><br> " +
@@ -118,14 +120,14 @@ var trial_block2 = {
       trial_duration: 3000, //Only if display_feedback is false
       left_category_key: 'E',
       right_category_key: 'I',
-      left_category_label: ['BAD'],
-      right_category_label: ['GOOD'],
+      left_category_label: ['MUSIC'],
+      right_category_label: ['SCIENCE'],
       response_ends_trial: true,
       data: { iat_type: 'practice' }
     }
   ],
   timeline_variables: [
-    {stimulus: "Guitar", stim_key_association: "left"},
+    {stimulus: "Singer", stim_key_association: "left"},
     {stimulus: "Rhythm", stim_key_association: "left"},
     {stimulus: "Lyrics", stim_key_association: "left"},
     {stimulus: "Guitar", stim_key_association: "left"},
@@ -149,10 +151,10 @@ var trial_block2 = {
 var instructions_block3 = {
   type: 'html-keyboard-response',
   stimulus: "<div style='position: absolute; top: 18%; left: 20%'>Press E for:<br> " +
-  "<strong>BAD</strong><br>" + "or<br>" + "<strong>OLD</strong></div>" + "<div style='position: absolute; top: 18%; right: 20%'>" +
-  "Press I for:<br>" + "<strong>GOOD</strong><br>" + "or<br>" + "<strong>YOUNG</strong></div>" +
-  "<div style='position: relative; top: 42%; margin-left: auto; margin-right: auto'>Use <strong>E</strong> for Musical and for " +
-  "Black People<br>" + "Use <strong>I</strong> for Scientific and for White People<br>" +
+  "<strong>MUSIC</strong><br>" + "or<br>" + "<strong>BLACK</strong></div>" + "<div style='position: absolute; top: 18%; right: 20%'>" +
+  "Press I for:<br>" + "<strong>SCIENCE</strong><br>" + "or<br>" + "<strong>WHITE</strong></div>" +
+  "<div style='position: relative; top: 42%; margin-left: auto; margin-right: auto'>Use <strong>E</strong> for MUSIC and for " +
+  "BLACK People<br>" + "Use <strong>I</strong> for SCIENCE and for WHITE People<br>" +
   "Each item belongs to only one category.<br><br>" + "If you " +
   "make a mistake, a red X will appear. Press the keys listed below " +
   "to continue. Go as fast as you can while being accurate.<br><br> " +
@@ -172,8 +174,8 @@ var trial_block3 = {
       trial_duration: 3000, //Only if display_feedback is false
       left_category_key: 'E',
       right_category_key: 'I',
-      left_category_label: ['BAD', 'OLD'],
-      right_category_label: ['GOOD', 'YOUNG'],
+      left_category_label: ['MUSIC', 'BLACK'],
+      right_category_label: ['SCIENCE', 'WHITE'],
       response_ends_trial: true,
       data: { iat_type: 'practice' }
     }
@@ -191,7 +193,7 @@ var trial_block3 = {
     {type: 'iat-image', stimulus: "../img/race/wm1_nc.jpg", stim_key_association: "right"},
     {type: 'iat-image', stimulus: "../img/race/wm4_nc.jpg", stim_key_association: "right"},
     {type: 'iat-image', stimulus: "../img/race/wm6_nc.jpg", stim_key_association: "right"},
-    {type: 'iat-html', stimulus: "Guitar", stim_key_association: "left"},
+    {type: 'iat-html', stimulus: "Singer", stim_key_association: "left"},
     {type: 'iat-html', stimulus: "Rhythm", stim_key_association: "left"},
     {type: 'iat-html', stimulus: "Lyrics", stim_key_association: "left"},
     {type: 'iat-html', stimulus: "Guitar", stim_key_association: "left"},
@@ -215,10 +217,10 @@ var trial_block3 = {
 var instructions_block4 = {
   type: 'html-keyboard-response',
   stimulus: "<div style='position: absolute; top: 18%; left: 20%'>Press E for:<br> " +
-  "<strong>BAD</strong><br>" + "or<br>" + "<strong>OLD</strong></div>" + "<div style='position: absolute; top: 18%; right: 20%'>" +
-  "Press I for:<br>" + "<strong>GOOD</strong><br>" + "or<br>" + "<strong>YOUNG</strong></div>" +
-  "<div style='position: relative; top: 42%; margin-left: auto; margin-right: auto'>This is the same as the previous part.<br>" + "Use <strong>E</strong> for Musical and for " +
-  "Black People<br>" + "Use <strong>I</strong> for Scientific and for White People<br>" +
+  "<strong>MUSIC</strong><br>" + "or<br>" + "<strong>BLACK</strong></div>" + "<div style='position: absolute; top: 18%; right: 20%'>" +
+  "Press I for:<br>" + "<strong>SCIENCE</strong><br>" + "or<br>" + "<strong>WHITE</strong></div>" +
+  "<div style='position: relative; top: 42%; margin-left: auto; margin-right: auto'>This is the same as the previous part.<br>" + "Use <strong>E</strong> for MUSIC and for " +
+  "BLACK People<br>" + "Use <strong>I</strong> for SCIENCE and for WHITE People<br>" +
   "Each item belongs to only one category.<br><br>" + "If you " +
   "make a mistake, a red X will appear. Press the keys listed below " +
   "to continue. Go as fast as you can while being accurate.<br><br> " +
@@ -239,8 +241,8 @@ var trial_block4 = {
         trial_duration: 3000, //Only if display_feedback is false
         left_category_key: 'E',
         right_category_key: 'I',
-        left_category_label: ['BAD', 'OLD'],
-        right_category_label: ['GOOD', 'YOUNG'],
+        left_category_label: ['MUSIC', 'BLACK'],
+        right_category_label: ['SCIENCE', 'WHITE'],
         response_ends_trial: true,
         data: { iat_type: 'bad-old' }
       }
@@ -258,7 +260,7 @@ var trial_block4 = {
       {type: 'iat-image', stimulus: "../img/race/wm1_nc.jpg", stim_key_association: "right"},
       {type: 'iat-image', stimulus: "../img/race/wm4_nc.jpg", stim_key_association: "right"},
       {type: 'iat-image', stimulus: "../img/race/wm6_nc.jpg", stim_key_association: "right"},
-      {type: 'iat-html', stimulus: "Guitar", stim_key_association: "left"},
+      {type: 'iat-html', stimulus: "Singer", stim_key_association: "left"},
       {type: 'iat-html', stimulus: "Rhythm", stim_key_association: "left"},
       {type: 'iat-html', stimulus: "Lyrics", stim_key_association: "left"},
       {type: 'iat-html', stimulus: "Guitar", stim_key_association: "left"},
@@ -281,10 +283,10 @@ var trial_block4 = {
 
   var instructions_block5 = {
     type: 'html-keyboard-response',
-    stimulus: "<div style='position: absolute; top: 18%; left: 20%'>Press E for:<br>" + "<strong>YOUNG</strong></div>" +
-    "<div style='position: absolute; top: 18%; right: 20%'>Press I for:<br>" + "<strong>OLD</strong></div>" +
+    stimulus: "<div style='position: absolute; top: 18%; left: 20%'>Press E for:<br>" + "<strong>WHITE</strong></div>" +
+    "<div style='position: absolute; top: 18%; right: 20%'>Press I for:<br>" + "<strong>BLACK</strong></div>" +
     "<div style='position: relative; top: 42%; margin-left: auto; margin-right: auto'>Watch out, the labels have changed positions!<br>" +
-    "Use <strong>E</strong> for White People<br>" + "Use <strong>I</strong> for Black People<br><br>" +
+    "Use <strong>E</strong> for WHITE People<br>" + "Use <strong>I</strong> for BLACK People<br><br>" +
     "If you make a mistake, a red X will appear. Press the keys listed below " +
     "to continue. Go as fast as you can while being accurate.<br><br> " +
     "Press the any key when you are ready to start.</div>"
@@ -304,8 +306,8 @@ var trial_block4 = {
         trial_duration: 3000, //Only if display_feedback is false
         left_category_key: 'E',
         right_category_key: 'I',
-        left_category_label: ['YOUNG'],
-        right_category_label: ['OLD'],
+        left_category_label: ['WHITE'],
+        right_category_label: ['BLACK'],
         response_ends_trial: true,
         data: { iat_type: 'practice' }
       }
@@ -330,11 +332,11 @@ var trial_block4 = {
 
   var instructions_block6 = {
     type: 'html-keyboard-response',
-    stimulus: "<div style='position: absolute; top: 18%; left: 20%'>Press E for:<br>" + "<strong>BAD</strong><br>" + "or<br>" +
-    "<strong>YOUNG</strong></div>" + "<div style='position: absolute; top: 18%; right: 20%'>Press I for:<br>" + "<strong>GOOD</strong><br>" + "or<br>" +
-    "<strong>OLD</strong></div>" +
-    "<div style='position: relative; top: 42%; margin-left: auto; margin-right: auto'>Use <strong>E</strong> for Musical and for White People<br>" +
-    "Use <strong>I</strong> for Scientific and for Black People<br><br>" +
+    stimulus: "<div style='position: absolute; top: 18%; left: 20%'>Press E for:<br>" + "<strong>MUSIC</strong><br>" + "or<br>" +
+    "<strong>WHITE</strong></div>" + "<div style='position: absolute; top: 18%; right: 20%'>Press I for:<br>" + "<strong>SCIENCE</strong><br>" + "or<br>" +
+    "<strong>BLACK</strong></div>" +
+    "<div style='position: relative; top: 42%; margin-left: auto; margin-right: auto'>Use <strong>E</strong> for MUSIC and for WHITE People<br>" +
+    "Use <strong>I</strong> for SCIENCE and for BLACK People<br><br>" +
     "If you make a mistake, a red X will appear. Press the keys listed below " +
     "to continue. Go as fast as you can while being accurate.<br><br> " +
     "Press the any key when you are ready to start.</div>"
@@ -353,8 +355,8 @@ var trial_block4 = {
       trial_duration: 3000, //Only if display_feedback is false
       left_category_key: 'E',
       right_category_key: 'I',
-      left_category_label: ['BAD', 'YOUNG'],
-      right_category_label: ['GOOD', 'OLD'],
+      left_category_label: ['MUSIC', 'WHITE'],
+      right_category_label: ['SCIENCE', 'BLACK'],
       response_ends_trial: true,
       data: {iat_type: 'practice'}
     }
@@ -372,7 +374,7 @@ var trial_block4 = {
       {type: 'iat-image', stimulus: "../img/race/wm1_nc.jpg", stim_key_association: "left"},
       {type: 'iat-image', stimulus: "../img/race/wm4_nc.jpg", stim_key_association: "left"},
       {type: 'iat-image', stimulus: "../img/race/wm6_nc.jpg", stim_key_association: "left"},
-      {type: 'iat-html', stimulus: "Guitar", stim_key_association: "left"},
+      {type: 'iat-html', stimulus: "Singer", stim_key_association: "left"},
       {type: 'iat-html', stimulus: "Rhythm", stim_key_association: "left"},
       {type: 'iat-html', stimulus: "Lyrics", stim_key_association: "left"},
       {type: 'iat-html', stimulus: "Guitar", stim_key_association: "left"},
@@ -395,12 +397,12 @@ var trial_block4 = {
 
   var instructions_block7 = {
     type: 'html-keyboard-response',
-    stimulus: "<div style='position: absolute; top: 18%; left: 20%'>Press E for:<br>" + "<strong>Musical</strong><br>" + "or<br>" +
-    "<strong>White People</strong></div>" + "<div style='position: absolute; top: 18%; right: 20%'>Press I for:<br>" + "<strong>Scientific</strong><br>" + "or<br>" +
-    "<strong>Black People</strong></div>" +
+    stimulus: "<div style='position: absolute; top: 18%; left: 20%'>Press E for:<br>" + "<strong>MUSIC</strong><br>" + "or<br>" +
+    "<strong>WHITE</strong></div>" + "<div style='position: absolute; top: 18%; right: 20%'>Press I for:<br>" + "<strong>SCIENCE</strong><br>" + "or<br>" +
+    "<strong>BLACK</strong></div>" +
     "<div style='position: relative; top: 42%; margin-left: auto; margin-right: auto'>This is the same as the previous part<br>" +
-    "Use <strong>E</strong> for Musical and for White People<br>" +
-    "Use <strong>I</strong> for Scientific and for Black People<br>" +
+    "Use <strong>E</strong> for MUSIC and for WHITE People<br>" +
+    "Use <strong>I</strong> for SCIENCE and for BLACK People<br>" +
     "Each item belongs to only one category<br><br>" +
     "If you make a mistake, a red X will appear. Press the keys listed below " +
     "to continue. Go as fast as you can while being accurate.<br><br> " +
@@ -421,8 +423,8 @@ var trial_block7 = {
     trial_duration: 3000, //Only if display_feedback is false
     left_category_key: 'E',
     right_category_key: 'I',
-    left_category_label: ['BAD', 'YOUNG'],
-    right_category_label: ['GOOD', 'OLD'],
+    left_category_label: ['MUSIC', 'WHITE'],
+    right_category_label: ['SCIENCE', 'BLACK'],
     response_ends_trial: true,
     data: {iat_type: 'bad-young'}
   }
@@ -440,7 +442,7 @@ var trial_block7 = {
     {type: 'iat-image', stimulus: "../img/race/wm1_nc.jpg", stim_key_association: "left"},
     {type: 'iat-image', stimulus: "../img/race/wm4_nc.jpg", stim_key_association: "left"},
     {type: 'iat-image', stimulus: "../img/race/wm6_nc.jpg", stim_key_association: "left"},
-    {type: 'iat-html', stimulus: "Guitar", stim_key_association: "left"},
+    {type: 'iat-html', stimulus: "Singer", stim_key_association: "left"},
     {type: 'iat-html', stimulus: "Rhythm", stim_key_association: "left"},
     {type: 'iat-html', stimulus: "Lyrics", stim_key_association: "left"},
     {type: 'iat-html', stimulus: "Guitar", stim_key_association: "left"},
@@ -477,8 +479,8 @@ var trial_block7 = {
       var d = (mean_correct_responses_bad_young - mean_correct_responses_bad_old) / sd;
 
       return "<p>You're done! Below is some information about how you performed.</p>"+
-        "<p>When the pairs were BAD/YOUNG and GOOD/OLD, it took you an average of <strong>"+Math.floor(mean_correct_responses_bad_young)+"ms</strong> to respond.</p>"+
-        "<p>When the pairs were BAD/OLD and GOOD/YOUNG, it took you an average of <strong>"+Math.floor(mean_correct_responses_bad_old)+"ms</strong> to respond.</p>"+
+        "<p>When the pairs were MUSIC/WHITE and SCIENCE/BLACK, it took you an average of <strong>"+Math.floor(mean_correct_responses_bad_young)+"ms</strong> to respond.</p>"+
+        "<p>When the pairs were MUSIC/BLACK and SCIENCE/WHITE, it took you an average of <strong>"+Math.floor(mean_correct_responses_bad_old)+"ms</strong> to respond.</p>"+
         "<p>Your D score, an index of performance that takes into account this difference and the overall level of variability in your responses, is <strong>"+d.toFixed(2)+"</strong></p>"+
         "<p>For reference, the Project Implicit IAT website labels D scores above 0.15 as a slight bias, scores above 0.35 as a moderate bias, and scores above 0.65 a strong bias.</p>"
     }
@@ -505,27 +507,27 @@ var trial_block7 = {
     timeline.push(trial_block7);
 } else {
   //  block of code to be executed if the condition is false
-  timeline.push(trial_block4);
   timeline.push(instructions_block5);
   timeline.push(trial_block5);
+  timeline.push(instructions_block2);
+  timeline.push(trial_block2);
   timeline.push(instructions_block6);
   timeline.push(trial_block6);
   timeline.push(instructions_block7);
   timeline.push(trial_block7);
   timeline.push(instructions_block);
   timeline.push(trial_block);
-  timeline.push(instructions_block2);
-  timeline.push(trial_block2);
   timeline.push(instructions_block3);
   timeline.push(trial_block3);
   timeline.push(instructions_block4);
+  timeline.push(trial_block4);
 }
 
 
   timeline.push(debrief_block);
 
   jsPsych.init({
-    display_element: 'jspsych_target',
+  //  display_element: 'jspsych_target',
     timeline: timeline,
     on_finish: function() {
       $.ajax({
@@ -545,4 +547,5 @@ var trial_block7 = {
   });
 
   </script>
+
   </html>
