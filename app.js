@@ -3,20 +3,29 @@ var express = require('express'),
     mongoose = require('mongoose'),
     body_parser = require('body-parser');
 
+
 // --- INSTANTIATE THE APP
 var app = express();
 
-// MongoDB communication
+// MongoDB
 
+console.log(process.env.NODE_ENV)
 var emptySchema = new mongoose.Schema({}, { strict: false });
 var Entry = mongoose.model('Entry', emptySchema);
 
-mongoose.connect(process.env.CONNECTION);
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error'));
-db.once('open', function callback() {
-    console.log('database opened');
-});
+if (process.env.NODE_ENV === 'development') {
+    // Define the development db
+    mongoose.connect('mongodb://localhost/jspsych');
+ } else if (process.env.NODE_ENV === 'production') {
+    // Define the production db
+    mongoose.connect(process.env.CONNECTION);
+ }
+
+ var db = mongoose.connection;
+ db.on('error', console.error.bind(console, 'connection error'));
+ db.once('open', function callback() {
+     console.log('database opened');
+ });
 
 //// --- STATIC MIDDLEWARE
 //app.use(express.static(__dirname + '/public'));
@@ -53,6 +62,16 @@ app.post('/experiment-data', function(request, response){
 })
 
 // --- START THE SERVER
-var server = app.listen(process.env.PORT, function(){
-    console.log("Listening on port %d", server.address().port);
-});
+if (process.env.NODE_ENV === 'development') {
+
+  var server = app.listen(3000, function(){
+      console.log("Listening on port %d", server.address().port);
+  });
+
+} else if (process.env.NODE_ENV === 'production') {
+   // Define the production db
+   var server = app.listen(process.env.PORT, function(){
+       console.log("Listening on port %d", server.address().port);
+   });
+
+ }

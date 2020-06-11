@@ -9,6 +9,7 @@
   <script src="../jspsych/plugins/jspsych-html-keyboard-response.js"></script>
   <script src="../jspsych/plugins/jspsych-html-button-response.js"></script>
   <script src="../jspsych/plugins/jspsych-survey-likert.js"></script>
+  <script src="https://brain2ai.github.io/jsPsychSheet/jspsychsheet.js"></script>
   <link href="../css/jspsych.css" rel="stylesheet" type="text/css"></link>
 </head>
 <body>
@@ -107,7 +108,7 @@ var welcome_block = {
   stimulus: '<p>You will now performed the academic version of the Implicit Association Test (5min). In this study you will ' +
   'complete an Implicit Association Test (IAT) in which you ' +
   'will be asked to sort pictures and words into groups <strong>as ' +
-  'fast and accurately as you can </strong>.</p><p>Press any key to bey.</p>',
+  'fast and accurately as you can </strong>.</p><p>Press any key to bey.</p> <br><br><p>A COMPUTER KEYBOARD IS NEEDED (TOUCHSCREENS NOT SUPPORTED)</p>',
   post_trial_gap: 1500
 };
 
@@ -262,7 +263,7 @@ var trial_block3 = {
       left_category_label: ['BAD', 'BLACK'],
       right_category_label: ['GOOD', 'WHITE'],
       response_ends_trial: true,
-      data: { iat_type: 'practice' }
+      data: { iat_type: 'early-bad-old' }
     }
   ],
   timeline_variables: [
@@ -443,7 +444,7 @@ var trial_block6 = {
       left_category_label: ['BAD', 'WHITE'],
       right_category_label: ['GOOD', 'BLACK'],
       response_ends_trial: true,
-      data: {iat_type: 'practice'}
+      data: {iat_type: 'early-bad-young'}
     }
   ],
   timeline_variables: [
@@ -553,44 +554,51 @@ var debrief_block = {
   stimulus: function() {
     // calculate D-score from https://faculty.washington.edu/agg/pdf/GB&N.JPSP.2003.pdf
     // first find mean RT
-    var bad_old = jsPsych.data.get().filter({iat_type: 'bad-old'}).filterCustom(function(x) { return x.rt < 10000 });
-    var mean_correct_responses_bad_old = bad_old.filter({correct: true}).select('rt').mean();
-    var bad_young = jsPsych.data.get().filter({iat_type: 'bad-young'}).filterCustom(function(x) { return x.rt < 10000 });
-    var mean_correct_responses_bad_young = bad_young.filter({correct: true}).select('rt').mean();
+    var bad_old_correct = jsPsych.data.get().filter({iat_type: 'bad-old', correct: true}).filterCustom(function(x) { return x.rt < 10000 }).select('rt');
+    var bad_old_incorrect = jsPsych.data.get().filter({iat_type: 'bad-old', correct: false}).filterCustom(function(x) { return x.rt < 10000 }).select('rt');
+    bad_old_incorrect = bad_old_incorrect.replace(bad_old_correct.mean() + 600);
+    var avg_bad_old = (bad_old_incorrect.sum() + bad_old_correct.sum())/(bad_old_incorrect.values.length + bad_old_correct.values.length);
 
-    // get overall sd
-    var sd = bad_old.join(bad_young).filter({correct: true}).select('rt').sd();
 
-    var d = (mean_correct_responses_bad_young - mean_correct_responses_bad_old) / sd;
+    var bad_young_correct = jsPsych.data.get().filter({iat_type: 'bad-young', correct: true}).filterCustom(function(x) { return x.rt < 10000 }).select('rt');
+    var bad_young_incorrect = jsPsych.data.get().filter({iat_type: 'bad-young', correct: false}).filterCustom(function(x) { return x.rt < 10000 }).select('rt');
+    bad_young_incorrect = bad_young_incorrect.replace(bad_young_correct.mean() + 600);
+    var avg_bad_young = (bad_young_incorrect.sum() + bad_young_correct.sum())/(bad_young_incorrect.values.length + bad_young_correct.values.length);
 
+    var early_bad_old_correct = jsPsych.data.get().filter({iat_type: 'early-bad-old', correct: true}).filterCustom(function(x) { return x.rt < 10000 }).select('rt');
+    var early_bad_old_incorrect = jsPsych.data.get().filter({iat_type: 'early-bad-old', correct: false}).filterCustom(function(x) { return x.rt < 10000 }).select('rt');
+    bad_old_incorrect = early_bad_old_incorrect.replace(early_bad_old_correct.mean() + 600);
+    var avg_early_bad_old = (early_bad_old_incorrect.sum() + early_bad_old_correct.sum())/(early_bad_old_incorrect.values.length + early_bad_old_correct.values.length);
+
+    var early_bad_young_correct = jsPsych.data.get().filter({iat_type: 'early-bad-young', correct: true}).filterCustom(function(x) { return x.rt < 10000 }).select('rt');
+    var early_bad_young_incorrect = jsPsych.data.get().filter({iat_type: 'early-bad-young', correct: false}).filterCustom(function(x) { return x.rt < 10000 }).select('rt');
+    bad_young_incorrect = early_bad_young_incorrect.replace(early_bad_young_correct.mean() + 600);
+    var avg_early_bad_young = (early_bad_young_incorrect.sum() + early_bad_young_correct.sum())/(early_bad_young_incorrect.values.length + early_bad_young_correct.values.length);
+
+    var pooled_early = jsPsych.data.get().filter({iat_type: 'early-bad-young'},{iat_type: 'early-bad-old'}).filterCustom(function(x) { return x.rt < 10000 }).select('rt');
+    var std_pooled_early = pooled_early.sd();
+
+    var pooled = jsPsych.data.get().filter({iat_type: 'bad-young'},{iat_type: 'bad-old'}).filterCustom(function(x) { return x.rt < 10000 }).select('rt');
+    var std_pooled = pooled.sd();
+
+    var early_ratio = (avg_early_bad_young-avg_early_bad_old)/std_pooled_early;
+    var ratio = (avg_bad_young-avg_bad_old)/std_pooled;
+
+    var d = (early_ratio + ratio) / 2;
+
+    console.log(d)
     return "<p>You're done! Below is some information about how you performed.</p>"+
-    "<p>When the pairs were BAD/WHITE and GOOD/BLACK, it took you an average of <strong>"+Math.floor(mean_correct_responses_bad_young)+"ms</strong> to respond.</p>"+
-    "<p>When the pairs were BAD/BLACK and GOOD/WHITE, it took you an average of <strong>"+Math.floor(mean_correct_responses_bad_old)+"ms</strong> to respond.</p>"+
-    "<p>Your D score, an index of performance that takes into account this difference and the overall level of variability in your responses, is <strong>"+d.toFixed(2)+"</strong></p>"+
-    "<p>For reference, the Project Implicit IAT website labels D scores above 0.15 as a slight bias, scores above 0.35 as a moderate bias, and scores above 0.65 a strong bias.</p><p>Keep in mind that behavioral data is inherently noisy, especially for short experiments. These reference values should thus be considered with caution.</p>"
-  }
-};
+      "<p>Your D score, an index of performance that takes into account your accuracy, your decision times and the overall level of variability in your decision times, is <strong>"+d.toFixed(2)+"</strong></p>"+
+      "<p>This score was computed using the improved algorithm proposed in <a href=\"https://faculty.washington.edu/agg/pdf/GB&N.JPSP.2003.pdf\" target=\"_blank\" >Greenwald et al., 2003</a>.</p>"+
+      "<p>For reference, the Project Implicit IAT website labels D scores above 0.15 as a slight bias, scores above 0.35 as a moderate bias, and scores above 0.65 a strong bias. However, keep in mind that behavioral data is noisy at the individual level and that the IAT is most meaningful when the results of many individuals are analyzed together.</p>"
 
-var debrief_block_inverted = {
-  type: "html-keyboard-response",
-  stimulus: function() {
-    // calculate D-score from https://faculty.washington.edu/agg/pdf/GB&N.JPSP.2003.pdf
-    // first find mean RT
-    var bad_old = jsPsych.data.get().filter({iat_type: 'bad-old'}).filterCustom(function(x) { return x.rt < 10000 });
-    var mean_correct_responses_bad_old = bad_old.filter({correct: true}).select('rt').mean();
-    var bad_young = jsPsych.data.get().filter({iat_type: 'bad-young'}).filterCustom(function(x) { return x.rt < 10000 });
-    var mean_correct_responses_bad_young = bad_young.filter({correct: true}).select('rt').mean();
-
-    // get overall sd
-    var sd = bad_old.join(bad_young).filter({correct: true}).select('rt').sd();
-
-    var d = (mean_correct_responses_bad_young - mean_correct_responses_bad_old) / sd;
-
+      /*
     return "<p>You're done! Below is some information about how you performed.</p>"+
-    "<p>When the pairs were BAD/WHITE and GOOD/BLACK, it took you an average of <strong>"+Math.floor(mean_correct_responses_bad_young)+"ms</strong> to respond.</p>"+
-    "<p>When the pairs were BAD/BLACK and GOOD/WHITE, it took you an average of <strong>"+Math.floor(mean_correct_responses_bad_old)+"ms</strong> to respond.</p>"+
-    "<p>Your D score, an index of performance that takes into account this difference and the overall level of variability in your responses, is <strong>"+d.toFixed(2)+"</strong></p>"+
-    "<p>For reference, the Project Implicit IAT website labels D scores above 0.15 as a slight bias, scores above 0.35 as a moderate bias, and scores above 0.65 a strong bias.</p><p>Note that you were assigned to the reverse order group and that behavioral data is inherently noisy. These reference values should thus be considered with caution.</p>"
+    "<p>When the pairs were BAD/WHITE and GOOD/BLACK,  you gave a correct response in <strong>"+accuracy_bad_young.toFixed(2)+"%</strong> of the trials and it took you an average of <strong>"+Math.floor(mean_correct_responses_bad_young)+"ms</strong> to respond.</p>"+
+    "<p>When the pairs were BAD/BLACK and GOOD/WHITE,  you gave a correct response in <strong>"+accuracy_bad_old.toFixed(2)+"%</strong> of the trials and it took you an average of <strong>"+Math.floor(mean_correct_responses_bad_old)+"ms</strong> to respond.</p>"+
+    "<br>"+
+    "<p>Less correct responses and longer decision times in the BAD/WHITE and GOOD/BLACK condition, as compared to the BAD/BLACK and GOOD/WHITE condition, are indicative of an implicit racial bias. However, please note that behavioral data is inherently noisy at the individual level and that this experiment is designed to study implicit biases at the level of a community.</p>"
+    */
   }
 };
 
@@ -620,8 +628,6 @@ if (Math.random()>=0.5) {
   timeline.push(trial_block6);
   timeline.push(instructions_block7);
   timeline.push(trial_block7);
-  timeline.push(debrief_block);
-
 } else {
   //  block of code to be executed if the condition is false
   timeline.push(instructions_block5);
@@ -638,8 +644,9 @@ if (Math.random()>=0.5) {
   timeline.push(trial_block3);
   timeline.push(instructions_block4);
   timeline.push(trial_block4);
-  timeline.push(debrief_block_inverted);
 }
+
+timeline.push(debrief_block);
 
 
 jsPsych.init({
